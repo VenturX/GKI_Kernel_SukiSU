@@ -611,6 +611,23 @@ row na "Unicode normalization fix" "internal correctness fix, no runtime flag - 
 
 head_ "External hardware"
 
+# USB serial adapter support is built in for android13-5.15. The runtime
+# device node appears only while a supported USB-to-UART adapter is connected.
+if cfg_is CONFIG_USB_SERIAL y; then
+    if cfg_is CONFIG_USB_SERIAL_FTDI_SIO y &&
+       cfg_is CONFIG_USB_SERIAL_CP210X y &&
+       cfg_is CONFIG_USB_SERIAL_CH341 y &&
+       cfg_is CONFIG_USB_SERIAL_PL2303 y; then
+        row ok "USB serial (OTG UART)" \
+            "built-in FTDI, CP210x, CH341 and PL2303 drivers; connect adapter to expose /dev/ttyUSB*"
+    else
+        row bad "USB serial (OTG UART)" \
+            "CONFIG_USB_SERIAL=y but one or more expected adapter drivers are missing"
+    fi
+else
+    row off "USB serial (OTG UART)" "not enabled in this kernel build"
+fi
+
 _ath=$(cfg CONFIG_ATH9K_HTC 2>/dev/null)
 if [ "$_ath" = m ]; then
     if lsmod 2>/dev/null | grep -q ath9k_htc; then
