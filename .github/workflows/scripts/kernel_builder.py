@@ -4703,6 +4703,20 @@ CONFIG_CIFS_XATTR=y
             with open(config_file, "a") as f:
                 f.write("\n" + (self._ath9k_dir() / "ath9k-modules.fragment").read_text())
 
+        if self.config.android_version == "android13" and self.config.kernel_version == "5.15":
+            # USB OTG serial adapters for UART console/debug access on the
+            # tested vermeer build. Built in so the phone does not need to
+            # ship or load extra .ko files at runtime.
+            logger.info("Enabling built-in USB serial adapter drivers for android13-5.15")
+            with open(config_file, "a") as f:
+                f.write("\n# === USB serial adapters (OTG UART console/debug) ===\n")
+                f.write("CONFIG_USB_SERIAL=y\n")
+                f.write("CONFIG_USB_SERIAL_GENERIC=y\n")
+                f.write("CONFIG_USB_SERIAL_FTDI_SIO=y\n")
+                f.write("CONFIG_USB_SERIAL_CP210X=y\n")
+                f.write("CONFIG_USB_SERIAL_CH341=y\n")
+                f.write("CONFIG_USB_SERIAL_PL2303=y\n")
+
         if self._amneziawg_applied():
             # Only when add_amneziawg() really put the driver in the tree:
             # an undefined symbol in the defconfig is dropped in silence.
@@ -5763,6 +5777,16 @@ CONFIG_CIFS_XATTR=y
                     out.append((name, value.strip(), True))
                 elif line.startswith("# CONFIG_") and line.endswith("is not set"):
                     out.append((line.split()[1], None, True))
+        if self.config.android_version == "android13" and self.config.kernel_version == "5.15":
+            for name in (
+                "CONFIG_USB_SERIAL",
+                "CONFIG_USB_SERIAL_GENERIC",
+                "CONFIG_USB_SERIAL_FTDI_SIO",
+                "CONFIG_USB_SERIAL_CP210X",
+                "CONFIG_USB_SERIAL_CH341",
+                "CONFIG_USB_SERIAL_PL2303",
+            ):
+                out.append((name, "y", True))
         return out
 
     def _verify_effective_config(self):
