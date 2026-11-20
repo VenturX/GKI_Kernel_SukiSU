@@ -49,7 +49,7 @@ Download the latest build from **[Releases](https://github.com/nikakvo/GKI_Kerne
 | **[Baseband-guard](https://github.com/vc-teahouse/Baseband-guard)** | Blocks unauthorised writes to modem/baseband partitions |
 | **Ptrace leak fix, Unicode fix** | Upstream backports (ptrace race, UTF-8 normalisation bypass) |
 | **ath9k_htc** | TP-Link TL-WN722N **v1** over OTG: monitor mode + injection, internal WiFi keeps working ([details](ath9k-module/README.md)) |
-| **USB serial (OTG UART)** | Built-in FTDI, CP210x, CH341 and PL2303 support on Android 13 / kernel 5.15 builds; connect a USB-to-UART adapter through OTG to access serial consoles from Android apps |
+| **USB serial (OTG UART)** | Built-in FTDI, CP210x, CH341 and PL2303 support on Android 13 / kernel 5.15 builds; connect a compatible USB-to-UART adapter over OTG and use an Android app with USB host serial support |
 
 ### Check what is active
 
